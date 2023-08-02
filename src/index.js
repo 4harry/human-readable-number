@@ -1,4 +1,6 @@
 module.exports = function toReadable (number) {
+
+    //PS дерьмо а не код =)
     
     let str = '';
     // обработчик количества разрядов
@@ -9,27 +11,27 @@ module.exports = function toReadable (number) {
         }
 
         if (rank === 2) {
-            return tenTransfom(number);
+            return tenTransform(number);
         }
         
         if (rank === 3) {
             return hundreedTransform(number);
-            // str = `${unitTransform(Math.floor(number/100))} ${hundreedTransform(number)} ${tenTransfom(number)}`
         }
 
         if (rank === 4) {
             return 'one thousand';
         }
     }
+
     // обработчик единиц unit 0-9
     const unitTransform = (number) => {
-        let unitArr = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eigth', 'nine'];
-        return unitArr[number];
+        let arr = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        return arr[number];
     }
 
     // обработчик десятков 10-19
-    const ten_twentyTransfom = (number) => {
-        let arr = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'fifteen', 'seventeen', 'eighteen', 'nineteen'];
+    const ten_twentytransform = (number) => {
+        let arr = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
         return arr[number-10];
     }
 
@@ -40,13 +42,14 @@ module.exports = function toReadable (number) {
     }
 
     // десятки ИТОГ
-    const tenTransfom = (number) => {
+    const tenTransform = (number) => {
         if (number >= 10 && number < 20) {
-            return ten_twentyTransfom(number);
+            return ten_twentytransform(number);
         }
+        // переписать: убрать if, оставить только код
         if (number >= 20 && number <= 99) {
             if (!(number % 10)) {
-                str = tensRoundTransform(number)
+                str = tensRoundTransform(number);
                 return str;
             }
             else {
@@ -54,18 +57,19 @@ module.exports = function toReadable (number) {
                 return str; 
             }
         }
-    }
+        // if ((number % 100) === 10) {
+        //     return unitTransform(number % 100);
+        //     }
+        // }
+        // if (number % 100 === 0) {
+        //     return '';
+        }
                 
-    // обработчик сотен (не забыть про s в 200+ hundreeds)
+    // обработчик сотен
     const hundreedTransform = (number) => {
-        let hun = 'hundreeds';
-        if (number < 200) {
-            hun = 'hundreed'
-        }    
-        str = `${unitTransform(Math.floor(number/100))} ${hun} ${tenTransfom(number % 100)}`;
+        str = `${unitTransform(Math.floor(number/100))} hundred ${(number % 100) ? tenTransform(number % 100) || unitTransform(number % 100): ''}`;
         return str;
     }
 
-    // обработчик 1000 =)
-
+    return countRank(number);
 }
